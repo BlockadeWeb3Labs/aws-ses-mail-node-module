@@ -11,7 +11,7 @@ npm install https://github.com/BlockadeLabs/aws-ses-mail-node-module.git
 And wherever in the code you need to use it:
 
 ```
-const AwsSesMailer = require('aws-ses-mail-mode-module');
+const AwsSesMailer = require('aws-ses-mail-node-module');
 
 let mailer = new AwsSesMailer({
   // Optional
