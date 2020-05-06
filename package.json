@@ -1,0 +1,26 @@
+{
+  "name": "aws-ses-mail-node-module",
+  "version": "1.0.0",
+  "description": "AWS SES mail module for convenient AWS mail server interaction",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlockadeLabs/aws-ses-mail-node-module.git"
+  },
+  "author": "Blockade Games, Inc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BlockadeLabs/aws-ses-mail-node-module/issues"
+  },
+  "homepage": "https://github.com/BlockadeLabs/aws-ses-mail-node-module#readme",
+  "dependencies": {
+    "aws-sdk": "^2.460.0",
+    "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
+    "loglevel": "^1.6.1",
+    "mocha": "^6.1.4"
+  }
+}
