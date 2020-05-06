@@ -2,6 +2,14 @@
 
 ## Usage
 
+Include in your repo
+
+```
+npm install https://github.com/BlockadeLabs/aws-ses-mail-node-module.git
+```
+
+And wherever in the code you need to use it:
+
 ```
 const AwsSesMailer = require('aws-ses-mail-mode-module');
 
