@@ -46,7 +46,12 @@ Make sure you have a credentials file that matches the [format according to AWS'
 
 ### Test config
 
-Before you can run the tests, you need to set up a `.env.test` to designate where the AWS credentials live, and the recipient and sender of the test mail. The required values are all in `.env.test.sample`, and the only values that must be filled in are `TEST_RECIPIENT` and `TEST_SENDER`. Both must be whitelisted for your set of AWS SES credentials, or the credentials must otherwise have authority to send to / from both emails.
+Before you can run the tests, you need to set up a `.env.test` to designate where the AWS credentials live, and the recipient and sender of the test mail. The required values are all in `.env.test.sample`, and the only values that must be filled in are:
+
+- `TEST_RECIPIENT`
+- `TEST_SENDER`
+
+All must be whitelisted for your set of AWS SES credentials, or the credentials must otherwise have authority to send to / from both emails.
 
 ```
 cp .env.test.sample .env.test

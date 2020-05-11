@@ -31,6 +31,53 @@ describe("Send Test Mail", function() {
 
 	});
 
+	describe("Validation", function() {
+		let mailer = new AwsSesMailer({
+			"AWS_SHARED_CREDENTIALS_FILE" : process.env.TEST_AWS_SHARED_CREDENTIALS_FILE,
+			"AWS_PROFILE"                 : process.env.TEST_AWS_PROFILE,
+			"AWS_REGION"                  : process.env.TEST_AWS_REGION
+		});
+
+		it("Validate recipient from test environment", function(done) {
+			assert(mailer.validateRecipient(process.env.TEST_RECIPIENT) === true);
+			done();
+		});
+
+		it("Validate sender from test environment", function(done) {
+			assert(mailer.validateSender(process.env.TEST_SENDER) === true);
+			done();
+		});
+
+		it("Validate recipient without alias", function(done) {
+			assert(mailer.validateRecipient(process.env.TEST_RECIPIENT) === true);
+			done();
+		});
+
+		it("Validate sender without alias", function(done) {
+			assert(mailer.validateSender(process.env.TEST_SENDER) === true);
+			done();
+		});
+
+		const TEST_ALIAS_SENDER = "An Alias<fakeemail@google.com>";
+
+		it("Validate sender with alias", function(done) {
+			assert(mailer.validateSender(TEST_ALIAS_SENDER) === true);
+			done();
+		});
+
+		const TEST_RECIPIENT_ARRAY = [
+			process.env.TEST_RECIPIENT,
+			process.env.TEST_SENDER,
+			TEST_ALIAS_SENDER
+		];
+
+		it("Validate recipient array", function(done) {
+			assert(mailer.validateRecipient(TEST_RECIPIENT_ARRAY) === true);
+			done();
+		});
+
+	});
+
 	describe("Send a test email", function() {
 		it("Creates aws session and sends email", function(done) {
 			let mailer = new AwsSesMailer({

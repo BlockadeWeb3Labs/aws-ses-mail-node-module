@@ -22,6 +22,40 @@ class Mailer {
 		this.content = this.template.setTemplateVariables(variables);
 	}
 
+	validateEmail(input) {
+		const found = input.match(/<(.+)>/);
+		if (found) {
+			return emailValidator.validate(found[1]);
+		}
+
+		return emailValidator.validate(input);
+	}
+
+	validateRecipient(recipient) {
+		if (Array.isArray(recipient)) {
+			for (let idx = 0; idx < recipient.length; idx++) {
+				if (!this.validateEmail(recipient[idx])) {
+					log.error("Invalid recipient in array: " + String(recipient[idx]));
+					return false;
+				}
+			}
+		} else if (!this.validateEmail(recipient)) {
+			log.error("Invalid recipient: " + String(recipient));
+			return false;
+		}
+
+		return true;
+	}
+
+	validateSender(sender) {
+		if (!this.validateEmail(sender)) {
+			log.error("Invalid sender: " + String(sender));
+			return false;
+		}
+
+		return true;
+	}
+
 	send(recipient, sender, subject, replyTo = null) {
 		// Make sure we've prepared the email
 		if (!this.content) {
@@ -30,18 +64,7 @@ class Mailer {
 		}
 
 		// Validate parameters
-		if (Array.isArray(recipient)) {
-			for (let idx = 0; idx < recipient.length; idx++) {
-				if (!emailValidator.validate(recipient[idx])) {
-					log.error("Invalid recipient in array: " + String(recipient[idx]));
-					return false;
-				}
-			}
-		} else if (!emailValidator.validate(recipient)) {
-			log.error("Invalid recipient: " + String(recipient));
-			return false;
-		} else if (!emailValidator.validate(sender)) {
-			log.error("Invalid sender: " + String(sender));
+		if (!this.validateRecipient(recipient) || !this.validateSender(sender)) {
 			return false;
 		}
 
