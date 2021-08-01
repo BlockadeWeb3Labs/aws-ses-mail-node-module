@@ -151,7 +151,7 @@ class Mailer {
 
 		let mail = {
 			Destination: {
-				ToAddresses: recipient
+				BccAddresses: recipient
 			},
 			Source: sender,
 			Message: {
