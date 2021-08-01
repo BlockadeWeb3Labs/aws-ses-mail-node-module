@@ -108,4 +108,27 @@ describe("Send Test Mail", function() {
 			});
 		});
 	});
+
+	describe("Send a test text message", function() {
+		it("Creates aws session and sends email", function(done) {
+			let mailer = new AwsSesMailer({
+				"AWS_SHARED_CREDENTIALS_FILE" : process.env.TEST_AWS_SHARED_CREDENTIALS_FILE,
+				"AWS_PROFILE"                 : process.env.TEST_AWS_PROFILE,
+				"AWS_REGION"                  : process.env.TEST_AWS_REGION
+			});
+
+			let recipient = process.env.TEST_TEXT_RECIPIENT;
+			let sender    = process.env.TEST_SENDER;
+			let message   = "Test Text Message";
+
+			let sent = mailer.sendText(recipient, sender, message);
+
+			sent.then((res) => {
+				assert(res);
+				done();
+			}).catch((res) => {
+				done(new Error(res));
+			});
+		});
+	});
 });

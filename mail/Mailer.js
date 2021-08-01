@@ -116,6 +116,62 @@ class Mailer {
 		return this._send(mail, recipient);
 	}
 
+	sendText(recipient, sender, message, replyTo = null) {
+		// Make sure we've prepared the email
+		if (!message) {
+			log.error("No message to text");
+			return false;
+		}
+
+		// Validate parameters
+		if (!this.validateRecipient(recipient) || !this.validateSender(sender)) {
+			return false;
+		}
+
+		if (!Array.isArray(recipient)) {
+			recipient = [recipient];
+		}
+
+		if (!replyTo) {
+			replyTo = [sender];
+		} else if (Array.isArray(replyTo)) {
+			for (let idx = 0; idx < replyTo.length; idx++) {
+				if (!emailValidator.validate(replyTo[idx])) {
+					log.error("Invalid replyTo in array: " + String(replyTo[idx]));
+					return false;
+				}
+			}
+		} else if (!emailValidator.validate(replyTo)) {
+			replyTo = [sender];
+		}
+
+		if (!Array.isArray(replyTo)) {
+			replyTo = [replyTo];
+		}
+
+		let mail = {
+			Destination: {
+				ToAddresses: recipient
+			},
+			Source: sender,
+			Message: {
+				Body: {
+					Text: {
+						Charset: "UTF-8",
+						Data: message
+					}
+				},
+				Subject: {
+					Charset: 'UTF-8',
+					Data: ""
+				}
+			},
+			ReplyToAddresses: replyTo
+		};
+
+		return this._send(mail, recipient);
+	}
+
 	_send(mail, recipient) {
 		// Create the promise and SES service object
 		const SES = new aws.SES({
